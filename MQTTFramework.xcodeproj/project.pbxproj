@@ -7,8 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		4B0CF67F19DF4E3200A59018 /* MQTTFramework.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 4B0CF67E19DF4E3200A59018 /* MQTTFramework.h */; };
-		4B0CF68119DF4E3200A59018 /* MQTTFramework.m in Sources */ = {isa = PBXBuildFile; fileRef = 4B0CF68019DF4E3200A59018 /* MQTTFramework.m */; };
+		4B0CF67F19DF4E3200A59018 /* MQTTClient.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 4B0CF67E19DF4E3200A59018 /* MQTTClient.h */; };
+		4B0CF68119DF4E3200A59018 /* MQTTClient.m in Sources */ = {isa = PBXBuildFile; fileRef = 4B0CF68019DF4E3200A59018 /* MQTTClient.m */; };
+		4B0CF69619DF516900A59018 /* MQTTMessage.m in Sources */ = {isa = PBXBuildFile; fileRef = 4B0CF69519DF516900A59018 /* MQTTMessage.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -18,7 +19,7 @@
 			dstPath = "include/$(PRODUCT_NAME)";
 			dstSubfolderSpec = 16;
 			files = (
-				4B0CF67F19DF4E3200A59018 /* MQTTFramework.h in CopyFiles */,
+				4B0CF67F19DF4E3200A59018 /* MQTTClient.h in CopyFiles */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -26,10 +27,13 @@
 
 /* Begin PBXFileReference section */
 		4B0CF67B19DF4E3200A59018 /* libMQTTFramework.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libMQTTFramework.a; sourceTree = BUILT_PRODUCTS_DIR; };
-		4B0CF67E19DF4E3200A59018 /* MQTTFramework.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MQTTFramework.h; sourceTree = "<group>"; };
-		4B0CF68019DF4E3200A59018 /* MQTTFramework.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MQTTFramework.m; sourceTree = "<group>"; };
+		4B0CF67E19DF4E3200A59018 /* MQTTClient.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MQTTClient.h; sourceTree = "<group>"; };
+		4B0CF68019DF4E3200A59018 /* MQTTClient.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MQTTClient.m; sourceTree = "<group>"; };
 		4B0CF68619DF4E3200A59018 /* MQTTFrameworkTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = MQTTFrameworkTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		4B0CF68919DF4E3200A59018 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		4B0CF69219DF4E6600A59018 /* libMosquitto */ = {isa = PBXFileReference; lastKnownFileType = folder; path = libMosquitto; sourceTree = "<group>"; };
+		4B0CF69419DF516900A59018 /* MQTTMessage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MQTTMessage.h; sourceTree = "<group>"; };
+		4B0CF69519DF516900A59018 /* MQTTMessage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MQTTMessage.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -54,6 +58,7 @@
 			isa = PBXGroup;
 			children = (
 				4B0CF67D19DF4E3200A59018 /* MQTTFramework */,
+				4B0CF69219DF4E6600A59018 /* libMosquitto */,
 				4B0CF68719DF4E3200A59018 /* MQTTFrameworkTests */,
 				4B0CF67C19DF4E3200A59018 /* Products */,
 			);
@@ -71,8 +76,10 @@
 		4B0CF67D19DF4E3200A59018 /* MQTTFramework */ = {
 			isa = PBXGroup;
 			children = (
-				4B0CF67E19DF4E3200A59018 /* MQTTFramework.h */,
-				4B0CF68019DF4E3200A59018 /* MQTTFramework.m */,
+				4B0CF67E19DF4E3200A59018 /* MQTTClient.h */,
+				4B0CF68019DF4E3200A59018 /* MQTTClient.m */,
+				4B0CF69419DF516900A59018 /* MQTTMessage.h */,
+				4B0CF69519DF516900A59018 /* MQTTMessage.m */,
 			);
 			path = MQTTFramework;
 			sourceTree = "<group>";
@@ -180,7 +187,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				4B0CF68119DF4E3200A59018 /* MQTTFramework.m in Sources */,
+				4B0CF68119DF4E3200A59018 /* MQTTClient.m in Sources */,
+				4B0CF69619DF516900A59018 /* MQTTMessage.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

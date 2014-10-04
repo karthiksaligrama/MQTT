@@ -95,15 +95,16 @@ struct mosquitto *mosq;
 
 #pragma mark - Publishing part
 
--(void)publishMessage:(MQTTMessage *)message oncomplete:(MessageHandler)handler{
+-(void)publishMessage:(MQTTMessage *)message{
+    const char* topic = [message.topic cStringUsingEncoding:NSUTF8StringEncoding];
+    int mid;
+    
+    //mosquitto_publish(mosq, &mid, topic, message.payload.length, (__bridge const void *)(message.payload), 3, YES);
     
 }
 
 
 #pragma mark - Subscribing part
-
-
-
 
 -(void)dealloc{
     if(mosq){
@@ -117,7 +118,9 @@ struct mosquitto *mosq;
 void on_connect_callback(struct mosquitto *mosq, void *obj, int rc){
     MQTTClient *client = (__bridge MQTTClient *)obj;
     client.isConnected = (rc == ConnectionAccepted);
-    
+    if(client.completionHandler){
+        client.completionHandler(rc);
+    }
 }
 
 void on_disconnect_callback(struct mosquitto *mosq, void *obj,int rc){
@@ -126,24 +129,32 @@ void on_disconnect_callback(struct mosquitto *mosq, void *obj,int rc){
 }
 
 void on_publish_callback(struct mosquitto *mosq, void *obj, int mid){
-    
+    MQTTClient *client = (__bridge MQTTClient *)(obj);
+    //not really sure if we have there is any added advantage when you implement qos
 }
 
 void on_subscribe_callback(struct mosquitto *mosq, void *obj, int mid, int qos_count, const int *granted_qos){
-    
+    MQTTClient *client = (__bridge MQTTClient *)(obj);
+    //not really sure if we have there is any added advantage when you implement qos
 }
 
-void on_message_callback(struct mosquitto *mosq, void *obj, const struct mosquitto_message *message){
-    
+void on_message_callback(struct mosquitto *mosq, void *obj, const struct mosquitto_message *mosquitto_message){
+    NSString *topic = [NSString stringWithUTF8String: mosquitto_message->topic];
+    NSData *payload = [NSData dataWithBytes:mosquitto_message->payload length:mosquitto_message->payloadlen];
+    MQTTMessage *message = [[MQTTMessage alloc]initWithTopic:topic payload:payload];
+    MQTTClient* client = (__bridge MQTTClient*)obj;
+    if(client.delegate){
+        [client.delegate onMessageRecieved:message];
+    }
 }
 
 void on_unsubscribe_callback(struct mosquitto *mosq, void *obj, int mid){
-    
+    MQTTClient *client = (__bridge MQTTClient *)(obj);
+    //not really sure if we have there is any added advantage when you implement qos
 }
 
 void on_log_callback(struct mosquitto *mosq, void *obj, int level, const char *str){
     
 }
-
 
 @end

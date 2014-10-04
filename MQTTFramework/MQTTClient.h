@@ -17,25 +17,28 @@ typedef enum MQTTConnectionResponse:NSUInteger{
     ConnectionRefused
 } MQTTConnectionResponseCode;
 
-
-typedef void (^MessageHandler)(MQTTMessage *message);
-
 typedef void (^MQTTConnectionCompletionHandler)(MQTTConnectionResponseCode responseCode);
+
+
+@protocol MQTTMessageDelegate;
 
 @interface MQTTClient : NSObject
 
 @property(nonatomic,weak) MQTTConnectionCompletionHandler completionHandler;
+@property(nonatomic,weak) id<MQTTMessageDelegate> delegate;
 
 -(void)setMessageRetryInterval: (NSUInteger)seconds;
-
 -(MQTTClient *)initWithClientId:(NSString *)client;
-
 -(void)connectWithHost:(NSString *)host;
+
+-(void)publishMessage:(MQTTMessage *)message;
 
 @end
 
+
+
 @protocol MQTTMessageDelegate <NSObject>
-
-
+@required
+-(void)onMessageRecieved:(MQTTMessage *)message;
 
 @end

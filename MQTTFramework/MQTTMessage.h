@@ -13,4 +13,7 @@
 @property(nonatomic,copy) NSString *topic;
 @property(nonatomic,copy) NSData *payload;
 
+-(id)initWithTopic:(NSString *)topic
+           payload:(NSData *)payload;
+
 @end

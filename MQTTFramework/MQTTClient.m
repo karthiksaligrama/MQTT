@@ -21,6 +21,9 @@
 @property(nonatomic,assign) unsigned int reconnectDelayMax;
 @property(nonatomic,assign) unsigned int reconnectExponentialBackoff;
 @property(nonatomic,assign) unsigned int maxInflightMessage;
+
+@property(nonatomic,strong) dispatch_queue_t queue;
+
 @end
 
 @implementation MQTTClient
@@ -36,6 +39,30 @@ struct mosquitto *mosq;
     if(self){
         mosquitto_lib_init();
         self.clientId = clientId;
+        
+        self.keepAlive = 120;
+        self.reconnectDelay = 1;
+        self.reconnectDelayMax = 1;
+        self.reconnectExponentialBackoff = NO;
+        self.maxInflightMessage = 100;
+        if(!clientId)
+            [NSException raise:@"No Client Id" format:@"Mqtt Client is not intantiated with client id"];
+        
+        const char *client_id = [self.clientId cStringUsingEncoding:NSUTF8StringEncoding];
+        
+        mosq = mosquitto_new(client_id, NO, (__bridge void *)(self));
+        mosquitto_connect_callback_set(mosq, on_connect_callback);
+        mosquitto_disconnect_callback_set(mosq,on_disconnect_callback);
+        mosquitto_publish_callback_set(mosq,on_publish_callback);
+        mosquitto_subscribe_callback_set(mosq,on_subscribe_callback);
+        mosquitto_message_callback_set(mosq,on_message_callback);
+        mosquitto_unsubscribe_callback_set(mosq,on_unsubscribe_callback);
+        mosquitto_log_callback_set(mosq,on_log_callback);
+        mosquitto_reconnect_delay_set(mosq,self.reconnectDelay,self.reconnectDelayMax,self.reconnectExponentialBackoff);
+        mosquitto_max_inflight_messages_set(mosq,self.maxInflightMessage);
+        
+        self.queue = dispatch_queue_create(client_id, nil);
+
     }
     return self;
 }
@@ -55,26 +82,15 @@ struct mosquitto *mosq;
     self.host = hostName;
     self.sslEnabled = ssl;
     self.port = self.sslEnabled?8883:1883;
-    self.keepAlive = 120;
-    self.reconnectDelay = 1;
-    self.reconnectDelayMax = 1;
-    self.reconnectExponentialBackoff = NO;
-    self.maxInflightMessage = 100;
-    if(!clientId)
-        [NSException raise:@"No Client Id" format:@"Mqtt Client is not intantiated with client id"];
     
-    const char *client_id = [self.clientId cStringUsingEncoding:NSUTF8StringEncoding];
+    const char *cstrHost = [self.host cStringUsingEncoding:NSASCIIStringEncoding];
+    mosquitto_username_pw_set(mosq, NULL , NULL);
+    mosquitto_reconnect_delay_set(mosq, self.reconnectDelay, self.reconnectDelayMax, self.reconnectExponentialBackoff);
+    mosquitto_connect(mosq, cstrHost, self.port, self.keepAlive);
     
-    mosq = mosquitto_new(client_id, NO, (__bridge void *)(self));
-    mosquitto_connect_callback_set(mosq, on_connect_callback);
-    mosquitto_disconnect_callback_set(mosq,on_disconnect_callback);
-    mosquitto_publish_callback_set(mosq,on_publish_callback);
-    mosquitto_subscribe_callback_set(mosq,on_subscribe_callback);
-    mosquitto_message_callback_set(mosq,on_message_callback);
-    mosquitto_unsubscribe_callback_set(mosq,on_unsubscribe_callback);
-    mosquitto_log_callback_set(mosq,on_log_callback);
-    mosquitto_reconnect_delay_set(mosq,self.reconnectDelay,self.reconnectDelayMax,self.reconnectExponentialBackoff);
-    mosquitto_max_inflight_messages_set(mosq,self.maxInflightMessage);
+    dispatch_async(self.queue, ^{
+        mosquitto_loop_forever(mosq, -1, 1);
+    });
 }
 
 #pragma mark - Publishing part
@@ -86,6 +102,15 @@ struct mosquitto *mosq;
 
 #pragma mark - Subscribing part
 
+
+
+
+-(void)dealloc{
+    if(mosq){
+        mosquitto_destroy(mosq);
+        mosq = NULL;
+    }
+}
 
 #pragma mark - Callback methods from libmosquitto
 

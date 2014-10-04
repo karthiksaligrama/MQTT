@@ -20,9 +20,11 @@ typedef enum MQTTConnectionResponse:NSUInteger{
 
 typedef void (^MessageHandler)(MQTTMessage *message);
 
+typedef void (^MQTTConnectionCompletionHandler)(MQTTConnectionResponseCode responseCode);
+
 @interface MQTTClient : NSObject
 
-
+@property(nonatomic,weak) MQTTConnectionCompletionHandler completionHandler;
 
 -(void)setMessageRetryInterval: (NSUInteger)seconds;
 

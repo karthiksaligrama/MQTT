@@ -7,7 +7,33 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "MQTTMessage.h"
+
+typedef enum MQTTConnectionResponse:NSUInteger{
+    ConnectionAccepted,
+    ProtocolViolation,
+    IdentifierRejected,
+    ServerUnavailable,
+    ConnectionRefused
+} MQTTConnectionResponseCode;
+
+
+typedef void (^MessageHandler)(MQTTMessage *message);
 
 @interface MQTTClient : NSObject
+
+
+
+-(void)setMessageRetryInterval: (NSUInteger)seconds;
+
+-(MQTTClient *)initWithClientId:(NSString *)client;
+
+-(void)connectWithHost:(NSString *)host;
+
+@end
+
+@protocol MQTTMessageDelegate <NSObject>
+
+
 
 @end

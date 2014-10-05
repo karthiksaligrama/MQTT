@@ -41,4 +41,10 @@ typedef void (^MQTTConnectionCompletionHandler)(MQTTConnectionResponseCode respo
 @required
 -(void)onMessageRecieved:(MQTTMessage *)message;
 
+
+@optional
+-(void)onSubscribeWithClient:(MQTTClient *)client;
+-(void)onPublishWithClient:(MQTTClient *)client;
+
+
 @end

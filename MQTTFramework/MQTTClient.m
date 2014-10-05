@@ -130,12 +130,17 @@ void on_disconnect_callback(struct mosquitto *mosq, void *obj,int rc){
 
 void on_publish_callback(struct mosquitto *mosq, void *obj, int mid){
     MQTTClient *client = (__bridge MQTTClient *)(obj);
-    //not really sure if we have there is any added advantage when you implement qos
+    if(client.delegate){
+        [client.delegate onPublishWithClient:client];
+        //todo: need to implelemt quality of service
+    }
 }
 
 void on_subscribe_callback(struct mosquitto *mosq, void *obj, int mid, int qos_count, const int *granted_qos){
     MQTTClient *client = (__bridge MQTTClient *)(obj);
-    //not really sure if we have there is any added advantage when you implement qos
+    if(client.delegate){
+        [client.delegate onSubscribeWithClient:client];
+    }
 }
 
 void on_message_callback(struct mosquitto *mosq, void *obj, const struct mosquitto_message *mosquitto_message){
@@ -145,12 +150,14 @@ void on_message_callback(struct mosquitto *mosq, void *obj, const struct mosquit
     MQTTClient* client = (__bridge MQTTClient*)obj;
     if(client.delegate){
         [client.delegate onMessageRecieved:message];
+        //todo: need to implelemt quality of service
     }
 }
 
 void on_unsubscribe_callback(struct mosquitto *mosq, void *obj, int mid){
     MQTTClient *client = (__bridge MQTTClient *)(obj);
     //not really sure if we have there is any added advantage when you implement qos
+    
 }
 
 void on_log_callback(struct mosquitto *mosq, void *obj, int level, const char *str){

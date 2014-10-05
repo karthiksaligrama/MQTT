@@ -10,6 +10,7 @@
 		4B0CF67F19DF4E3200A59018 /* MQTTClient.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 4B0CF67E19DF4E3200A59018 /* MQTTClient.h */; };
 		4B0CF68119DF4E3200A59018 /* MQTTClient.m in Sources */ = {isa = PBXBuildFile; fileRef = 4B0CF68019DF4E3200A59018 /* MQTTClient.m */; };
 		4B0CF69619DF516900A59018 /* MQTTMessage.m in Sources */ = {isa = PBXBuildFile; fileRef = 4B0CF69519DF516900A59018 /* MQTTMessage.m */; };
+		4BDF452F19E1ED9F00FBAF61 /* NSMutableArray+Queue.m in Sources */ = {isa = PBXBuildFile; fileRef = 4BDF452E19E1ED9F00FBAF61 /* NSMutableArray+Queue.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -34,6 +35,8 @@
 		4B0CF69219DF4E6600A59018 /* libMosquitto */ = {isa = PBXFileReference; lastKnownFileType = folder; path = libMosquitto; sourceTree = "<group>"; };
 		4B0CF69419DF516900A59018 /* MQTTMessage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MQTTMessage.h; sourceTree = "<group>"; };
 		4B0CF69519DF516900A59018 /* MQTTMessage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MQTTMessage.m; sourceTree = "<group>"; };
+		4BDF452D19E1ED9F00FBAF61 /* NSMutableArray+Queue.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSMutableArray+Queue.h"; sourceTree = "<group>"; };
+		4BDF452E19E1ED9F00FBAF61 /* NSMutableArray+Queue.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSMutableArray+Queue.m"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -80,6 +83,8 @@
 				4B0CF68019DF4E3200A59018 /* MQTTClient.m */,
 				4B0CF69419DF516900A59018 /* MQTTMessage.h */,
 				4B0CF69519DF516900A59018 /* MQTTMessage.m */,
+				4BDF452D19E1ED9F00FBAF61 /* NSMutableArray+Queue.h */,
+				4BDF452E19E1ED9F00FBAF61 /* NSMutableArray+Queue.m */,
 			);
 			path = MQTTFramework;
 			sourceTree = "<group>";
@@ -189,6 +194,7 @@
 			files = (
 				4B0CF68119DF4E3200A59018 /* MQTTClient.m in Sources */,
 				4B0CF69619DF516900A59018 /* MQTTMessage.m in Sources */,
+				4BDF452F19E1ED9F00FBAF61 /* NSMutableArray+Queue.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -351,6 +357,7 @@
 				4B0CF68E19DF4E3200A59018 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		4B0CF68F19DF4E3200A59018 /* Build configuration list for PBXNativeTarget "MQTTFrameworkTests" */ = {
 			isa = XCConfigurationList;
@@ -359,6 +366,7 @@
 				4B0CF69119DF4E3200A59018 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};

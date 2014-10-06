@@ -30,6 +30,16 @@
     return self;
 }
 
-
+-(id)initWithTopic:(NSString *)topic
+           payload:(NSData *)payload
+               qos:(MessageQualityOfService)qos
+               mid:(int)mid
+{
+    self = [self initWithTopic:topic payload:payload qos:qos];
+    if(self){
+        self.messageId = [NSNumber numberWithInt:mid];
+    }
+    return self;
+}
 
 @end

@@ -29,4 +29,9 @@ typedef enum MessageQualityOfService:NSUInteger{
            payload:(NSData *)payload
                qos:(MessageQualityOfService)qos;
 
+-(id)initWithTopic:(NSString *)topic
+           payload:(NSData *)payload
+               qos:(MessageQualityOfService)qos
+               mid:(int)mid;
+
 @end

@@ -9,15 +9,15 @@
          <BuildActionEntry
             buildForTesting = "YES"
             buildForRunning = "YES"
-            buildForProfiling = "NO"
-            buildForArchiving = "NO"
+            buildForProfiling = "YES"
+            buildForArchiving = "YES"
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "4B0CF68519DF4E3200A59018"
-               BuildableName = "MQTTFrameworkTests.xctest"
-               BlueprintName = "MQTTFrameworkTests"
-               ReferencedContainer = "container:MQTTFramework.xcodeproj">
+               BlueprintIdentifier = "4B0CF67A19DF4E3200A59018"
+               BuildableName = "libMQTT.a"
+               BlueprintName = "MQTT"
+               ReferencedContainer = "container:MQTT.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>
@@ -28,26 +28,7 @@
       shouldUseLaunchSchemeArgsEnv = "YES"
       buildConfiguration = "Debug">
       <Testables>
-         <TestableReference
-            skipped = "NO">
-            <BuildableReference
-               BuildableIdentifier = "primary"
-               BlueprintIdentifier = "4B0CF68519DF4E3200A59018"
-               BuildableName = "MQTTFrameworkTests.xctest"
-               BlueprintName = "MQTTFrameworkTests"
-               ReferencedContainer = "container:MQTTFramework.xcodeproj">
-            </BuildableReference>
-         </TestableReference>
       </Testables>
-      <MacroExpansion>
-         <BuildableReference
-            BuildableIdentifier = "primary"
-            BlueprintIdentifier = "4B0CF68519DF4E3200A59018"
-            BuildableName = "MQTTFrameworkTests.xctest"
-            BlueprintName = "MQTTFrameworkTests"
-            ReferencedContainer = "container:MQTTFramework.xcodeproj">
-         </BuildableReference>
-      </MacroExpansion>
    </TestAction>
    <LaunchAction
       selectedDebuggerIdentifier = "Xcode.DebuggerFoundation.Debugger.LLDB"
@@ -61,10 +42,10 @@
       <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "4B0CF68519DF4E3200A59018"
-            BuildableName = "MQTTFrameworkTests.xctest"
-            BlueprintName = "MQTTFrameworkTests"
-            ReferencedContainer = "container:MQTTFramework.xcodeproj">
+            BlueprintIdentifier = "4B0CF67A19DF4E3200A59018"
+            BuildableName = "libMQTT.a"
+            BlueprintName = "MQTT"
+            ReferencedContainer = "container:MQTT.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
       <AdditionalOptions>
@@ -79,10 +60,10 @@
       <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "4B0CF68519DF4E3200A59018"
-            BuildableName = "MQTTFrameworkTests.xctest"
-            BlueprintName = "MQTTFrameworkTests"
-            ReferencedContainer = "container:MQTTFramework.xcodeproj">
+            BlueprintIdentifier = "4B0CF67A19DF4E3200A59018"
+            BuildableName = "libMQTT.a"
+            BlueprintName = "MQTT"
+            ReferencedContainer = "container:MQTT.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
    </ProfileAction>

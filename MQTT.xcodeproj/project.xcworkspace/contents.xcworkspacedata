@@ -2,6 +2,6 @@
 <Workspace
    version = "1.0">
    <FileRef
-      location = "self:MQTTFramework.xcodeproj">
+      location = "self:MQTT.xcodeproj">
    </FileRef>
 </Workspace>

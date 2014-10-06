@@ -9,6 +9,11 @@
 			<key>orderHint</key>
 			<integer>0</integer>
 		</dict>
+		<key>MQTTFrameworkAggregate.xcscheme</key>
+		<dict>
+			<key>orderHint</key>
+			<integer>2</integer>
+		</dict>
 		<key>MQTTFrameworkTests.xcscheme</key>
 		<dict>
 			<key>orderHint</key>
@@ -23,6 +28,11 @@
 			<true/>
 		</dict>
 		<key>4B0CF68519DF4E3200A59018</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>4BDF457819E3421700FBAF61</key>
 		<dict>
 			<key>primary</key>
 			<true/>

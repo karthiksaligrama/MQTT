@@ -28,8 +28,11 @@ typedef void (^MQTTConnectionCompletionHandler)(MQTTConnectionResponseCode respo
 
 -(void)setMessageRetryInterval: (NSUInteger)seconds;
 -(MQTTClient *)initWithClientId:(NSString *)client;
--(void)connectWithHost:(NSString *)host;
 -(void)publishMessage:(MQTTMessage *)message;
+
+-(void)connectWithHost:(NSString *)host;
+-(void)connectWithHost:(NSString *)hostName withPort:(int)port enableSSL:(bool)ssl;
+-(void)connectWithHost:(NSString *)hostName withSSL:(BOOL)ssl;
 
 @end
 

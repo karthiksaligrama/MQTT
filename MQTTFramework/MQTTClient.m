@@ -88,10 +88,10 @@ struct mosquitto *mosq;
     [self connectWithHost:hostName withSSL:NO];
 }
 
--(void)connectWithHost:(NSString *)hostName withSSL:(BOOL)ssl{
+-(void)connectWithHost:(NSString *)hostName withPort:(int)port enableSSL:(bool)ssl{
     self.host = hostName;
     self.sslEnabled = ssl;
-    self.port = self.sslEnabled?8883:1883;
+    self.port = port;
     
     if(self.sslEnabled){
         //save the certificate for ssl connection
@@ -119,6 +119,11 @@ struct mosquitto *mosq;
     dispatch_async(self.queue, ^{
         mosquitto_loop_forever(mosq, -1, 1);
     });
+}
+
+-(void)connectWithHost:(NSString *)hostName withSSL:(BOOL)ssl{
+    int p = ssl?8883:1883;
+    [self connectWithHost:hostName withPort:p enableSSL:ssl];
 }
 
 

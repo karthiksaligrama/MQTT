@@ -44,12 +44,6 @@ struct mosquitto *mosq;
 @synthesize clientId;
 @synthesize isConnected;
 
--(id)init{
-    @throw [NSException exceptionWithName:@"Invalid method"
-                                   reason:@"Invalid method, Use -(MQTTClient *)initWithClientId:(NSString *)client method instead"
-                                 userInfo:nil];
-}
-
 -(MQTTClient *)initWithClientId:(NSString *)client{
     self = [super init];
     if(self){

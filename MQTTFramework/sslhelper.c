@@ -53,7 +53,7 @@ int save_ssl_certificate_at_path(char dest_url[], const char *filename)
     if(SSL_library_init() < 0){
         raise(SIGINT);
     }
-   
+    
     method = SSLv23_client_method();
     
     //Try to create a new SSL context
@@ -167,8 +167,8 @@ int create_socket(char url_str[], BIO *out) {
 
 
 /* for testing
-int main()
-{
-    return save_ssl_certificate_at_path("https://nextstep.tcs.com:443","/Users/kass/Desktop/filename.crt");
-}
-*/
+ int main()
+ {
+ return save_ssl_certificate_at_path("https://nextstep.tcs.com:443","/Users/kass/Desktop/filename.crt");
+ }
+ */

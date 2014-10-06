@@ -23,6 +23,10 @@
 #include <openssl/x509.h>
 #include <openssl/x509_vfy.h>
 
+#include "sslhelper.h"
+
+
+
 /* ---------------------------------------------------------- *
  * First we need to make a standard TCP socket connection.    *
  * create_socket() creates a socket & TCP-connects to server. *
@@ -34,12 +38,10 @@ int save_ssl_certificate_at_path(char dest_url[], const char *filename)
     BIO              *certbio = NULL;
     BIO               *outbio = NULL;
     X509                *cert = NULL;
-    X509_NAME       *certname = NULL;
     const SSL_METHOD *method;
     SSL_CTX *ctx;
     SSL *ssl;
     int server = 0;
-    int ret, i;
     
     OpenSSL_add_all_algorithms();
     ERR_load_BIO_strings();

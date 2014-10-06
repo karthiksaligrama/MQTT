@@ -11,4 +11,7 @@
 
 #include <stdio.h>
 
+int save_ssl_certificate_at_path(char[], const char *);
+
 #endif /* defined(__MQTTFramework__sslhelper1__) */
+

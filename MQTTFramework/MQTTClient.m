@@ -10,7 +10,10 @@
 #import "mosquitto.h"
 #import <openssl/ssl.h>
 #import <openssl/err.h>
+#import "sslhelper.h"
 
+
+#define SSL_CERTIFICATE_PATH @"/tmp/ssl_certificate.crt"
 
 @interface MQTTClient()
 
@@ -91,6 +94,21 @@ struct mosquitto *mosq;
     self.port = self.sslEnabled?8883:1883;
     
     if(self.sslEnabled){
+        //save the certificate for ssl connection
+        
+        const char *caFilePath = [SSL_CERTIFICATE_PATH cStringUsingEncoding:NSUTF8StringEncoding];
+        
+        //TODO: validate if the certificate is already present
+        //if certificate is already present then we can validate the certificate
+        //if validation fails trigger saving of the certificate again
+        NSString *url = [[NSString alloc]initWithFormat:@"ssl://%@:%d",hostName,self.port];
+        const char *c = [url UTF8String];
+        char *cpy = calloc([url length]+1, 1);
+        strncpy(cpy, c, [url length]);
+        save_ssl_certificate_at_path(cpy,caFilePath);
+        free(cpy);
+        
+        mosquitto_tls_set(mosq,caFilePath, NULL, NULL, NULL, NULL);
         
     }
     const char *cstrHost = [self.host cStringUsingEncoding:NSASCIIStringEncoding];

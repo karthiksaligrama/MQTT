@@ -13,6 +13,7 @@
 		4BDF453319E2054D00FBAF61 /* libcrypto.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4BDF453119E2054D00FBAF61 /* libcrypto.a */; };
 		4BDF453419E2054D00FBAF61 /* libssl.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4BDF453219E2054D00FBAF61 /* libssl.a */; };
 		4BDF453919E256FD00FBAF61 /* sslhelper.c in Sources */ = {isa = PBXBuildFile; fileRef = 4BDF453819E256FD00FBAF61 /* sslhelper.c */; };
+		4BDF453C19E32B7F00FBAF61 /* sslhelper1.c in Sources */ = {isa = PBXBuildFile; fileRef = 4BDF453A19E32B7F00FBAF61 /* sslhelper1.c */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -40,6 +41,8 @@
 		4BDF453119E2054D00FBAF61 /* libcrypto.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libcrypto.a; sourceTree = "<group>"; };
 		4BDF453219E2054D00FBAF61 /* libssl.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libssl.a; sourceTree = "<group>"; };
 		4BDF453819E256FD00FBAF61 /* sslhelper.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = sslhelper.c; sourceTree = "<group>"; };
+		4BDF453A19E32B7F00FBAF61 /* sslhelper1.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = sslhelper1.c; sourceTree = "<group>"; };
+		4BDF453B19E32B7F00FBAF61 /* sslhelper1.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = sslhelper1.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -90,6 +93,8 @@
 				4B0CF69419DF516900A59018 /* MQTTMessage.h */,
 				4B0CF69519DF516900A59018 /* MQTTMessage.m */,
 				4BDF453819E256FD00FBAF61 /* sslhelper.c */,
+				4BDF453A19E32B7F00FBAF61 /* sslhelper1.c */,
+				4BDF453B19E32B7F00FBAF61 /* sslhelper1.h */,
 			);
 			path = MQTTFramework;
 			sourceTree = "<group>";
@@ -206,6 +211,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				4BDF453C19E32B7F00FBAF61 /* sslhelper1.c in Sources */,
 				4B0CF68119DF4E3200A59018 /* MQTTClient.m in Sources */,
 				4BDF453919E256FD00FBAF61 /* sslhelper.c in Sources */,
 				4B0CF69619DF516900A59018 /* MQTTMessage.m in Sources */,

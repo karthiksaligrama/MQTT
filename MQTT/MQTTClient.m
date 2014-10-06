@@ -48,7 +48,7 @@ struct mosquitto *mosq;
     self = [super init];
     if(self){
         mosquitto_lib_init();
-        self.clientId = clientId;
+        self.clientId = client;
         
         self.keepAlive = 120;
         self.reconnectDelay = 1;

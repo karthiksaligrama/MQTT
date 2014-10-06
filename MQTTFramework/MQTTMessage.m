@@ -13,10 +13,19 @@
 -(id)initWithTopic:(NSString *)topic
            payload:(NSData *)payload
 {
+    self = [self initWithTopic:topic payload:payload qos:3];
+    return self;
+}
+
+-(id)initWithTopic:(NSString *)topic
+           payload:(NSData *)payload
+               qos:(MessageQualityOfService)qos
+{
     self = [self init];
     if(self){
         self.topic = topic;
         self.payload = payload;
+        self.qos =qos;
     }
     return self;
 }

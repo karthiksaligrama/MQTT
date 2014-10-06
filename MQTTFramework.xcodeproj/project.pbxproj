@@ -10,7 +10,9 @@
 		4B0CF67F19DF4E3200A59018 /* MQTTClient.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 4B0CF67E19DF4E3200A59018 /* MQTTClient.h */; };
 		4B0CF68119DF4E3200A59018 /* MQTTClient.m in Sources */ = {isa = PBXBuildFile; fileRef = 4B0CF68019DF4E3200A59018 /* MQTTClient.m */; };
 		4B0CF69619DF516900A59018 /* MQTTMessage.m in Sources */ = {isa = PBXBuildFile; fileRef = 4B0CF69519DF516900A59018 /* MQTTMessage.m */; };
-		4BDF452F19E1ED9F00FBAF61 /* NSMutableArray+Queue.m in Sources */ = {isa = PBXBuildFile; fileRef = 4BDF452E19E1ED9F00FBAF61 /* NSMutableArray+Queue.m */; };
+		4BDF453319E2054D00FBAF61 /* libcrypto.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4BDF453119E2054D00FBAF61 /* libcrypto.a */; };
+		4BDF453419E2054D00FBAF61 /* libssl.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4BDF453219E2054D00FBAF61 /* libssl.a */; };
+		4BDF453919E256FD00FBAF61 /* sslhelper.c in Sources */ = {isa = PBXBuildFile; fileRef = 4BDF453819E256FD00FBAF61 /* sslhelper.c */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -35,8 +37,9 @@
 		4B0CF69219DF4E6600A59018 /* libMosquitto */ = {isa = PBXFileReference; lastKnownFileType = folder; path = libMosquitto; sourceTree = "<group>"; };
 		4B0CF69419DF516900A59018 /* MQTTMessage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MQTTMessage.h; sourceTree = "<group>"; };
 		4B0CF69519DF516900A59018 /* MQTTMessage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MQTTMessage.m; sourceTree = "<group>"; };
-		4BDF452D19E1ED9F00FBAF61 /* NSMutableArray+Queue.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSMutableArray+Queue.h"; sourceTree = "<group>"; };
-		4BDF452E19E1ED9F00FBAF61 /* NSMutableArray+Queue.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSMutableArray+Queue.m"; sourceTree = "<group>"; };
+		4BDF453119E2054D00FBAF61 /* libcrypto.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libcrypto.a; sourceTree = "<group>"; };
+		4BDF453219E2054D00FBAF61 /* libssl.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libssl.a; sourceTree = "<group>"; };
+		4BDF453819E256FD00FBAF61 /* sslhelper.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = sslhelper.c; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -44,6 +47,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				4BDF453419E2054D00FBAF61 /* libssl.a in Frameworks */,
+				4BDF453319E2054D00FBAF61 /* libcrypto.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -60,6 +65,7 @@
 		4B0CF67219DF4E3200A59018 = {
 			isa = PBXGroup;
 			children = (
+				4BDF453019E204F600FBAF61 /* Libs */,
 				4B0CF67D19DF4E3200A59018 /* MQTTFramework */,
 				4B0CF69219DF4E6600A59018 /* libMosquitto */,
 				4B0CF68719DF4E3200A59018 /* MQTTFrameworkTests */,
@@ -83,8 +89,7 @@
 				4B0CF68019DF4E3200A59018 /* MQTTClient.m */,
 				4B0CF69419DF516900A59018 /* MQTTMessage.h */,
 				4B0CF69519DF516900A59018 /* MQTTMessage.m */,
-				4BDF452D19E1ED9F00FBAF61 /* NSMutableArray+Queue.h */,
-				4BDF452E19E1ED9F00FBAF61 /* NSMutableArray+Queue.m */,
+				4BDF453819E256FD00FBAF61 /* sslhelper.c */,
 			);
 			path = MQTTFramework;
 			sourceTree = "<group>";
@@ -103,6 +108,15 @@
 				4B0CF68919DF4E3200A59018 /* Info.plist */,
 			);
 			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		4BDF453019E204F600FBAF61 /* Libs */ = {
+			isa = PBXGroup;
+			children = (
+				4BDF453119E2054D00FBAF61 /* libcrypto.a */,
+				4BDF453219E2054D00FBAF61 /* libssl.a */,
+			);
+			path = Libs;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -193,8 +207,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				4B0CF68119DF4E3200A59018 /* MQTTClient.m in Sources */,
+				4BDF453919E256FD00FBAF61 /* sslhelper.c in Sources */,
 				4B0CF69619DF516900A59018 /* MQTTMessage.m in Sources */,
-				4BDF452F19E1ED9F00FBAF61 /* NSMutableArray+Queue.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -288,6 +302,11 @@
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)/**",
 					libMosquitto,
+					include,
+				);
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/Libs",
 				);
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -301,6 +320,11 @@
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)/**",
 					libMosquitto,
+					include,
+				);
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/Libs",
 				);
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = "$(TARGET_NAME)";

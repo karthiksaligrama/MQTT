@@ -8,6 +8,9 @@
 
 #import "MQTTClient.h"
 #import "mosquitto.h"
+#import <openssl/ssl.h>
+#import <openssl/err.h>
+
 
 @interface MQTTClient()
 
@@ -21,8 +24,12 @@
 @property(nonatomic,assign) unsigned int reconnectDelayMax;
 @property(nonatomic,assign) unsigned int reconnectExponentialBackoff;
 @property(nonatomic,assign) unsigned int maxInflightMessage;
-
 @property(nonatomic,strong) dispatch_queue_t queue;
+
+
+//queues for holding the data that is to be published
+@property(nonatomic,strong) NSMutableDictionary *publishQueue;
+
 
 @end
 
@@ -83,6 +90,9 @@ struct mosquitto *mosq;
     self.sslEnabled = ssl;
     self.port = self.sslEnabled?8883:1883;
     
+    if(self.sslEnabled){
+        
+    }
     const char *cstrHost = [self.host cStringUsingEncoding:NSASCIIStringEncoding];
     mosquitto_username_pw_set(mosq, NULL , NULL);
     mosquitto_reconnect_delay_set(mosq, self.reconnectDelay, self.reconnectDelayMax, self.reconnectExponentialBackoff);
@@ -93,14 +103,15 @@ struct mosquitto *mosq;
     });
 }
 
+
 #pragma mark - Publishing part
 
 -(void)publishMessage:(MQTTMessage *)message{
     const char* topic = [message.topic cStringUsingEncoding:NSUTF8StringEncoding];
     int mid;
-    
-    //mosquitto_publish(mosq, &mid, topic, message.payload.length, (__bridge const void *)(message.payload), 3, YES);
-    
+    [self.publishQueue setObject:message forKey:[NSNumber numberWithInt:mid]];
+    mosquitto_publish(mosq, &mid, topic, (int)message.payload.length, message.payload.bytes, message.qos, NO);
+    [message setMessageId:[NSNumber numberWithInt:mid]];
 }
 
 
@@ -126,19 +137,24 @@ void on_connect_callback(struct mosquitto *mosq, void *obj, int rc){
 void on_disconnect_callback(struct mosquitto *mosq, void *obj,int rc){
     MQTTClient *client = (__bridge MQTTClient *)obj;
     client.isConnected = NO;
+    
+    [client.publishQueue removeAllObjects];
+    if(client.delegate && [client.delegate respondsToSelector:@selector(onDisconnect:)]){
+        [client.delegate onDisconnect:rc];
+    }
 }
 
 void on_publish_callback(struct mosquitto *mosq, void *obj, int mid){
     MQTTClient *client = (__bridge MQTTClient *)(obj);
-    if(client.delegate){
+    if(client.delegate && [client.delegate respondsToSelector:@selector(onPublishWithClient:)]){
         [client.delegate onPublishWithClient:client];
-        //todo: need to implelemt quality of service
+        [client.publishQueue removeObjectForKey:[NSNumber numberWithInt:mid]];
     }
 }
 
 void on_subscribe_callback(struct mosquitto *mosq, void *obj, int mid, int qos_count, const int *granted_qos){
     MQTTClient *client = (__bridge MQTTClient *)(obj);
-    if(client.delegate){
+    if(client.delegate && [client.delegate respondsToSelector:@selector(onSubscribeWithClient:)]){
         [client.delegate onSubscribeWithClient:client];
     }
 }
@@ -148,7 +164,7 @@ void on_message_callback(struct mosquitto *mosq, void *obj, const struct mosquit
     NSData *payload = [NSData dataWithBytes:mosquitto_message->payload length:mosquitto_message->payloadlen];
     MQTTMessage *message = [[MQTTMessage alloc]initWithTopic:topic payload:payload];
     MQTTClient* client = (__bridge MQTTClient*)obj;
-    if(client.delegate){
+    if(client.delegate && [client.delegate respondsToSelector:@selector(onMessageRecieved:)]){
         [client.delegate onMessageRecieved:message];
         //todo: need to implelemt quality of service
     }
@@ -156,8 +172,6 @@ void on_message_callback(struct mosquitto *mosq, void *obj, const struct mosquit
 
 void on_unsubscribe_callback(struct mosquitto *mosq, void *obj, int mid){
     MQTTClient *client = (__bridge MQTTClient *)(obj);
-    //not really sure if we have there is any added advantage when you implement qos
-    
 }
 
 void on_log_callback(struct mosquitto *mosq, void *obj, int level, const char *str){

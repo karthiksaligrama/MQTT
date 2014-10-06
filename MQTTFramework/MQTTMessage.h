@@ -8,12 +8,25 @@
 
 #import <Foundation/Foundation.h>
 
+typedef enum MessageQualityOfService:NSUInteger{
+    AtMostOnce,
+    AtLeastOnce,
+    ExactlyOnce
+} MessageQualityOfService;
+
+
 @interface MQTTMessage : NSObject
 
 @property(nonatomic,copy) NSString *topic;
 @property(nonatomic,copy) NSData *payload;
+@property MessageQualityOfService qos;
+@property(nonatomic) NSNumber *messageId;
 
 -(id)initWithTopic:(NSString *)topic
            payload:(NSData *)payload;
+
+-(id)initWithTopic:(NSString *)topic
+           payload:(NSData *)payload
+               qos:(MessageQualityOfService)qos;
 
 @end

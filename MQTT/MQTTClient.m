@@ -187,7 +187,9 @@ void on_disconnect_callback(struct mosquitto *mosq, void *obj,int rc){
 void on_publish_callback(struct mosquitto *mosq, void *obj, int mid){
     MQTTClient *client = (__bridge MQTTClient *)(obj);
     if(client.delegate && [client.delegate respondsToSelector:@selector(onPublishMessage:)]){
-        [client.delegate onPublishMessage:[NSNumber numberWithInt:mid]];
+        [[NSOperationQueue mainQueue]addOperationWithBlock:^{
+            [client.delegate onPublishMessage:[NSNumber numberWithInt:mid]];
+        }];
         [client.publishQueue removeObjectForKey:[NSNumber numberWithInt:mid]];
     }
 }
@@ -213,7 +215,9 @@ void on_message_callback(struct mosquitto *mosq, void *obj, const struct mosquit
     
     MQTTClient* client = (__bridge MQTTClient*)obj;
     if(client.delegate && [client.delegate respondsToSelector:@selector(onMessageRecieved:)]){
-        [client.delegate onMessageRecieved:message];
+        [[NSOperationQueue mainQueue]addOperationWithBlock:^{
+            [client.delegate onMessageRecieved:message];
+        }];
     }
 }
 

@@ -106,7 +106,12 @@ struct mosquitto *mosq;
         save_ssl_certificate_at_path(cpy,caFilePath);
         free(cpy);
         
-        mosquitto_tls_set(mosq,caFilePath, NULL, NULL, NULL, NULL);
+        int success = mosquitto_tls_set(mosq,caFilePath, NULL, NULL, NULL, NULL);
+        if(success == MOSQ_ERR_SUCCESS){
+            NSLog(@"SSL Set successful");
+        }else{
+            NSLog(@"ssl error %d",success);
+        }
     }
     
     const char *cstrHost = [self.host cStringUsingEncoding:NSASCIIStringEncoding];

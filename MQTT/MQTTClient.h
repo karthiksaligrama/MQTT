@@ -9,6 +9,8 @@
 #import <Foundation/Foundation.h>
 #import "MQTTMessage.h"
 
+
+
 typedef enum MQTTConnectionResponse:NSUInteger{
     ConnectionAccepted,
     ProtocolViolation,

@@ -80,6 +80,7 @@ int save_ssl_certificate_at_path(char dest_url[], const char *filename)
     
     //Get the remote certificate into the X509 structure
     cert = SSL_get_peer_certificate(ssl);
+    
     if (cert == NULL)//{
         raise(SIGINT);
     
@@ -168,9 +169,8 @@ int create_socket(char url_str[], BIO *out) {
 }
 
 
-/* for testing
+//for testing
  int main()
  {
- return save_ssl_certificate_at_path("https://nextstep.tcs.com:443","/Users/kass/Desktop/filename.crt");
+ return save_ssl_certificate_at_path("ssl://test.mosquitto.org:8884","/Users/kass/Desktop/filename.crt");
  }
- */

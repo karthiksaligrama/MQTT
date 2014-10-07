@@ -53,8 +53,8 @@ typedef void (^MQTTSubscribeHandler)(NSArray *qosGranted);
 -(void)connectWithHost:(NSString *)hostName withPort:(int)port enableSSL:(bool)ssl;
 
 /*
- *
- *
+ * Connect with remote server with host name, ssl flag , port number and certificate file.
+ * Useful when you are not using trusted CA or Self Signed CA
  */
 -(void)connectWithHost:(NSString *)hostName withPort:(int)port enableSSL:(bool)ssl usingSSLCACert:(NSString *)certFile;
 
@@ -82,6 +82,13 @@ typedef void (^MQTTSubscribeHandler)(NSArray *qosGranted);
  */
 
 -(void)unsubscribeToTopic:(NSString *)topic;
+
+
+/*
+ * Disconnect from Server
+ */
+-(void)disconnect;
+
 
 
 @end

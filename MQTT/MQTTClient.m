@@ -55,6 +55,7 @@ struct mosquitto *mosq;
         self.reconnectDelayMax = 1;
         self.reconnectExponentialBackoff = NO;
         self.maxInflightMessage = 100;
+        
         if(!clientId)
             [NSException raise:@"No Client Id" format:@"Mqtt Client is not intantiated with client id"];
         
@@ -117,7 +118,11 @@ struct mosquitto *mosq;
     dispatch_async(self.queue, ^{
         mosquitto_loop_forever(mosq, -1, 1);
     });
-    
+}
+
+#pragma mark disconnect
+-(void)disconnect{
+    mosquitto_disconnect(mosq);
 }
 
 

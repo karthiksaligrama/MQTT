@@ -53,6 +53,12 @@ typedef void (^MQTTSubscribeHandler)(NSArray *qosGranted);
 -(void)connectWithHost:(NSString *)hostName withPort:(int)port enableSSL:(bool)ssl;
 
 /*
+ *
+ *
+ */
+-(void)connectWithHost:(NSString *)hostName withPort:(int)port enableSSL:(bool)ssl usingSSLCACert:(NSString *)certFile;
+
+/*
  * Publish message to the MQTT Server.
  * return the message id of the published message.
  * Store it and retrieve handle it in the callback.

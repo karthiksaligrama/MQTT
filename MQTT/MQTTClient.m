@@ -87,25 +87,20 @@ struct mosquitto *mosq;
 }
 
 -(void)connectWithHost:(NSString *)hostName withPort:(int)port enableSSL:(bool)ssl{
+    [self connectWithHost:hostName withPort:port enableSSL:ssl usingSSLCACert:SSL_CERTIFICATE_PATH];
+}
+
+-(void)connectWithHost:(NSString *)hostName withSSL:(BOOL)ssl{
+    int p = ssl?8883:1883;
+    [self connectWithHost:hostName withPort:p enableSSL:ssl];
+}
+
+-(void)connectWithHost:(NSString *)hostName withPort:(int)port enableSSL:(bool)ssl usingSSLCACert:(NSString *)certFile{
     self.host = hostName;
     self.sslEnabled = ssl;
     self.port = port;
-    
     if(self.sslEnabled){
-        //save the certificate for ssl connection
-        
-        const char *caFilePath = [SSL_CERTIFICATE_PATH cStringUsingEncoding:NSUTF8StringEncoding];
-        
-        //TODO: validate if the certificate is already present
-        //if certificate is already present then we can validate the certificate
-        //if validation fails trigger saving of the certificate again
-        NSString *url = [[NSString alloc]initWithFormat:@"ssl://%@:%d",hostName,self.port];
-        const char *c = [url UTF8String];
-        char *cpy = calloc([url length]+1, 1);
-        strncpy(cpy, c, [url length]);
-        save_ssl_certificate_at_path(cpy,caFilePath);
-        free(cpy);
-        
+        const char* caFilePath = [certFile cStringUsingEncoding:NSUTF8StringEncoding];
         int success = mosquitto_tls_set(mosq,caFilePath, NULL, NULL, NULL, NULL);
         if(success == MOSQ_ERR_SUCCESS){
             NSLog(@"SSL Set successful");
@@ -122,11 +117,7 @@ struct mosquitto *mosq;
     dispatch_async(self.queue, ^{
         mosquitto_loop_forever(mosq, -1, 1);
     });
-}
-
--(void)connectWithHost:(NSString *)hostName withSSL:(BOOL)ssl{
-    int p = ssl?8883:1883;
-    [self connectWithHost:hostName withPort:p enableSSL:ssl];
+    
 }
 
 

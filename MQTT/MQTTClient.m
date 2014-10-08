@@ -34,6 +34,9 @@
 @property(nonatomic,strong) NSMutableDictionary *publishQueue;
 @property(nonatomic,strong) NSMutableDictionary *subscribeQueue;
 
+
+@property(nonatomic,strong) PasswordCallback callback;
+
 @end
 
 @implementation MQTTClient
@@ -88,7 +91,7 @@ struct mosquitto *mosq;
 }
 
 -(void)connectWithHost:(NSString *)hostName withPort:(int)port enableSSL:(bool)ssl{
-    [self connectWithHost:hostName withPort:port enableSSL:ssl usingSSLCACert:SSL_CERTIFICATE_PATH];
+    [self connectWithHost:hostName withPort:port enableSSL:ssl usingSSLCACert:nil];
 }
 
 -(void)connectWithHost:(NSString *)hostName withSSL:(BOOL)ssl{
@@ -100,7 +103,7 @@ struct mosquitto *mosq;
     self.host = hostName;
     self.sslEnabled = ssl;
     self.port = port;
-    if(self.sslEnabled){
+    if(self.sslEnabled && certFile){
         const char* caFilePath = [certFile cStringUsingEncoding:NSUTF8StringEncoding];
         int success = mosquitto_tls_set(mosq,caFilePath, NULL, NULL, NULL, NULL);
         if(success == MOSQ_ERR_SUCCESS){
@@ -111,7 +114,9 @@ struct mosquitto *mosq;
     }
     
     const char *cstrHost = [self.host cStringUsingEncoding:NSASCIIStringEncoding];
+    
     mosquitto_username_pw_set(mosq, NULL , NULL);
+    
     mosquitto_reconnect_delay_set(mosq, self.reconnectDelay, self.reconnectDelayMax, self.reconnectExponentialBackoff);
     mosquitto_connect(mosq, cstrHost, self.port, self.keepAlive);
     
@@ -120,11 +125,26 @@ struct mosquitto *mosq;
     });
 }
 
+-(void)setSSLInsecure:(BOOL)insecure{
+    mosquitto_tls_insecure_set(mosq,insecure);
+}
+
+
+
+-(void)setSSLSettings:(NSDictionary *)options passwordCallback:(PasswordCallback) pwdCallback{
+    const char *certFile = [(NSString *)[options objectForKey:CERT_FILE] cStringUsingEncoding:NSUTF8StringEncoding];
+    const char *caPath = [(NSString *)[options objectForKey:CA_PATH] cStringUsingEncoding:NSUTF8StringEncoding];
+    const char *caFile = [(NSString *)[options objectForKey:CA_FILE] cStringUsingEncoding:NSUTF8StringEncoding];
+    const char *keyFile = [(NSString *)[options objectForKey:KEY_FILE] cStringUsingEncoding:NSUTF8StringEncoding];
+    self.callback = pwdCallback;
+    
+    mosquitto_tls_set(mosq, caFile, caPath, certFile, keyFile, on_pw_callback);
+}
+
 #pragma mark disconnect
 -(void)disconnect{
     mosquitto_disconnect(mosq);
 }
-
 
 #pragma mark - Publishing part
 
@@ -167,6 +187,12 @@ struct mosquitto *mosq;
 }
 
 #pragma mark - Callback methods from libmosquitto
+
+int on_pw_callback(char *buf, int size, int rwflag, void *userdata){
+    //work on returning the
+    //NSString *password =self.callback();
+    return 0;
+}
 
 void on_connect_callback(struct mosquitto *mosq, void *obj, int rc){
     MQTTClient *client = (__bridge MQTTClient *)obj;

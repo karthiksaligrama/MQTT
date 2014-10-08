@@ -9,7 +9,10 @@
 #import <Foundation/Foundation.h>
 #import "MQTTMessage.h"
 
-
+#define CERT_FILE @"CERT_FILE"
+#define KEY_FILE @"KEY_FILE"
+#define CA_PATH @"CA_PATH"
+#define CA_FILE @"CA_FILE"
 
 typedef enum MQTTConnectionResponse:NSUInteger{
     ConnectionAccepted,
@@ -20,6 +23,7 @@ typedef enum MQTTConnectionResponse:NSUInteger{
 } MQTTConnectionResponseCode;
 
 typedef void (^MQTTSubscribeHandler)(NSArray *qosGranted);
+typedef NSString* (^PasswordCallback)();
 
 @protocol MQTTMessageDelegate;
 
@@ -30,7 +34,6 @@ typedef void (^MQTTSubscribeHandler)(NSArray *qosGranted);
 /*
  *  Initialize the MQTT Client
  */
-
 -(MQTTClient *)initWithClientId:(NSString *)client;
 
 /*
@@ -59,12 +62,26 @@ typedef void (^MQTTSubscribeHandler)(NSArray *qosGranted);
 -(void)connectWithHost:(NSString *)hostName withPort:(int)port enableSSL:(bool)ssl usingSSLCACert:(NSString *)certFile;
 
 /*
+ * Incase you are using self signed certificates. 
+ * #warning Donot use in production.
+ * call before using connect
+ */
+-(void)setSSLInsecure:(BOOL)insecure;
+
+/*
+ * Settings for the SSL.
+ * Accepts a dictionary with the following values;
+ * CA_PATH,CA_FILE,CERT_FILE,KEY_FILE
+ * Set the passwordCallback incase the keyfile is encrypted.
+ */
+-(void)setSSLSettings:(NSDictionary *)options passwordCallback:(PasswordCallback) pwdCallback;
+
+/*
  * Publish message to the MQTT Server.
  * return the message id of the published message.
  * Store it and retrieve handle it in the callback.
  */
 -(NSNumber *)publishMessage:(MQTTMessage *)message;
-
 
 /*
  * Set the message retry interval in case of publishing the message
@@ -74,15 +91,12 @@ typedef void (^MQTTSubscribeHandler)(NSArray *qosGranted);
 /*
  * Subscribe Message from the MQTT server with a given topic and quality of service
  */
-
 -(void)subscribeToTopic:(NSString *)topic qos:(MessageQualityOfService)qos subscribeHandler:(MQTTSubscribeHandler)handler;
 
 /*
  * Unsubscribe to topic from the MQTT server
  */
-
 -(void)unsubscribeToTopic:(NSString *)topic;
-
 
 /*
  * Disconnect from Server
@@ -90,10 +104,7 @@ typedef void (^MQTTSubscribeHandler)(NSArray *qosGranted);
 -(void)disconnect;
 
 
-
 @end
-
-
 
 @protocol MQTTMessageDelegate <NSObject>
 

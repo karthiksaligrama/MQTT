@@ -1,10 +1,28 @@
 MQTT
 ====
 
-MQTT Library for Objective C
+MQTT Library for Objective C based on libMosquitto C Library.
+
+Features
+====
+
+1. Framework file for easy integration
+2. Support for SSL,TLS
+3. Support for custom CA SSL.
+
+API Example
+===
+
+Please go through the repository https://github.com/karthiksaligrama/MQTTExample for complete implementation of the framework.
 
 
-license
+Known Bugs/Issues
+===
+
+1. Need to use the iPhone list of CA incase the CA is not mentioned by the user.
+
+
+License
 =====
 
 Please read License.md for license details for the MQTT framework.

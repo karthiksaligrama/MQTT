@@ -37,6 +37,13 @@ typedef NSString* (^PasswordCallback)();
 -(MQTTClient *)initWithClientId:(NSString *)client;
 
 /*
+ * Set the username and password for the mosquitto broker to connect
+ * Call this before calling connect method incase you are using username and password
+ *
+ */
+-(void)setUsername:(NSString *)username Password:(NSString *)password;
+
+/*
  * Connect with Hostname
  * This connection with server is not secure. It connects to server with default port 1883.
  */
@@ -64,7 +71,7 @@ typedef NSString* (^PasswordCallback)();
 /*
  * Incase you are using self signed certificates. 
  * #warning Donot use in production.
- * call before using connect
+ * call before using connect and after calling setSSLSettings method
  */
 -(void)setSSLInsecure:(BOOL)insecure;
 
@@ -73,6 +80,7 @@ typedef NSString* (^PasswordCallback)();
  * Accepts a dictionary with the following values;
  * CA_PATH,CA_FILE,CERT_FILE,KEY_FILE
  * Set the passwordCallback incase the keyfile is encrypted.
+ * Needs to be called before you call the connect method.
  */
 -(void)setSSLSettings:(NSDictionary *)options passwordCallback:(PasswordCallback) pwdCallback;
 

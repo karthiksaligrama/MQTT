@@ -12,7 +12,6 @@
 #import <openssl/err.h>
 #import "sslhelper.h"
 
-
 #define SSL_CERTIFICATE_PATH @"/tmp/ssl_certificate.crt"
 
 @interface MQTTClient()
@@ -74,7 +73,7 @@ struct mosquitto *mosq;
         mosquitto_log_callback_set(mosq,on_log_callback);
         mosquitto_reconnect_delay_set(mosq,self.reconnectDelay,self.reconnectDelayMax,self.reconnectExponentialBackoff);
         mosquitto_max_inflight_messages_set(mosq,self.maxInflightMessage);
-
+        
         self.publishQueue = [[NSMutableDictionary alloc]init];
         self.subscribeQueue = [[NSMutableDictionary alloc]init];
         
@@ -111,12 +110,13 @@ struct mosquitto *mosq;
         }else{
             NSLog(@"ssl error %d",success);
         }
+    }else{
+        NSLog(@"ssl enabled = %d && certfile = %@",self.sslEnabled,certFile);
     }
     
     const char *cstrHost = [self.host cStringUsingEncoding:NSASCIIStringEncoding];
     
     mosquitto_username_pw_set(mosq, NULL , NULL);
-    
     mosquitto_reconnect_delay_set(mosq, self.reconnectDelay, self.reconnectDelayMax, self.reconnectExponentialBackoff);
     mosquitto_connect(mosq, cstrHost, self.port, self.keepAlive);
     
@@ -129,8 +129,6 @@ struct mosquitto *mosq;
     mosquitto_tls_insecure_set(mosq,insecure);
 }
 
-
-
 -(void)setSSLSettings:(NSDictionary *)options passwordCallback:(PasswordCallback) pwdCallback{
     const char *certFile = [(NSString *)[options objectForKey:CERT_FILE] cStringUsingEncoding:NSUTF8StringEncoding];
     const char *caPath = [(NSString *)[options objectForKey:CA_PATH] cStringUsingEncoding:NSUTF8StringEncoding];
@@ -141,13 +139,23 @@ struct mosquitto *mosq;
     mosquitto_tls_set(mosq, caFile, caPath, certFile, keyFile, on_pw_callback);
 }
 
+-(void)setUsername:(NSString *)username Password:(NSString *)password{
+    if(!username || !password){
+        [NSException raise:@"invalid username and password" format:@"invalid username and password"];
+    }
+    
+    const char *cStringUsername = [username cStringUsingEncoding:NSUTF8StringEncoding];
+    const char *cStringPassword = [password cStringUsingEncoding:NSUTF8StringEncoding];
+    
+    mosquitto_username_pw_set(mosq, cStringUsername, cStringPassword);
+}
+
 #pragma mark disconnect
 -(void)disconnect{
     mosquitto_disconnect(mosq);
 }
 
 #pragma mark - Publishing part
-
 -(NSNumber *)publishMessage:(MQTTMessage *)message{
     const char* topic = [message.topic cStringUsingEncoding:NSUTF8StringEncoding];
     int mid;
@@ -156,7 +164,6 @@ struct mosquitto *mosq;
     [message setMessageId:[NSNumber numberWithInt:mid]];
     return [message messageId];
 }
-
 
 -(void)setMessageRetryInterval: (NSUInteger)seconds{
     mosquitto_message_retry_set(mosq, (unsigned int)seconds);
@@ -189,8 +196,7 @@ struct mosquitto *mosq;
 #pragma mark - Callback methods from libmosquitto
 
 int on_pw_callback(char *buf, int size, int rwflag, void *userdata){
-    //work on returning the
-    //NSString *password =self.callback();
+    #warning method not yet implemented
     return 0;
 }
 
@@ -254,7 +260,7 @@ void on_unsubscribe_callback(struct mosquitto *mosq, void *obj, int mid){
 }
 
 void on_log_callback(struct mosquitto *mosq, void *obj, int level, const char *str){
-    
+    NSLog(@"mosquitto log : %s",str);
 }
 
 @end

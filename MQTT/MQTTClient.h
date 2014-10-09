@@ -13,6 +13,15 @@
 #define KEY_FILE @"KEY_FILE"
 #define CA_PATH @"CA_PATH"
 #define CA_FILE @"CA_FILE"
+#define CERT_REQD @"CERT_REQD"
+#define TLS_VERSION @"TLS_VERSION"
+#define CIPHERS @"CIPHERS"
+
+typedef enum {
+    TLS1_2_VERSION,
+    TLS1_1_VERSION,
+    TLS1_VERSION
+}TLSVERSION;
 
 typedef enum MQTTConnectionResponse:NSUInteger{
     ConnectionAccepted,

@@ -10,9 +10,8 @@
 #import "mosquitto.h"
 #import <openssl/ssl.h>
 #import <openssl/err.h>
-#import "sslhelper.h"
 
-#define SSL_CERTIFICATE_PATH @"/tmp/ssl_certificate.crt"
+#define kTlsVersionArray @"tlsv1.2", @"tlsv1.1", @"tlsv1", nil
 
 @interface MQTTClient()
 
@@ -134,8 +133,21 @@ struct mosquitto *mosq;
     const char *caPath = [(NSString *)[options objectForKey:CA_PATH] cStringUsingEncoding:NSUTF8StringEncoding];
     const char *caFile = [(NSString *)[options objectForKey:CA_FILE] cStringUsingEncoding:NSUTF8StringEncoding];
     const char *keyFile = [(NSString *)[options objectForKey:KEY_FILE] cStringUsingEncoding:NSUTF8StringEncoding];
-    self.callback = pwdCallback;
     
+    NSArray *keys = [options allKeys];
+    
+    if([keys containsObject:TLS_VERSION] || [keys containsObject:CERT_REQD] || [keys containsObject:CIPHERS]){
+        TLSVERSION tlsVersion = (TLSVERSION)[options valueForKey:TLS_VERSION];
+        const char *tlsVersionCString = [[self tlsVersionEnumToString:tlsVersion] cStringUsingEncoding:NSUTF8StringEncoding];
+        
+        int certificateRequired = (int)([keys containsObject:CERT_REQD]?[[options valueForKey:CERT_REQD] integerValue]:1);
+        
+        const char *cipher = [(NSString *)[options valueForKey:CIPHERS] cStringUsingEncoding:NSUTF8StringEncoding];
+        
+        mosquitto_tls_opts_set(mosq, certificateRequired, tlsVersionCString, cipher);
+    }
+    
+    self.callback = pwdCallback;
     mosquitto_tls_set(mosq, caFile, caPath, certFile, keyFile, on_pw_callback);
 }
 
@@ -255,12 +267,19 @@ void on_message_callback(struct mosquitto *mosq, void *obj, const struct mosquit
 }
 
 void on_unsubscribe_callback(struct mosquitto *mosq, void *obj, int mid){
-    MQTTClient *client = (__bridge MQTTClient *)(obj);
-    
+    #warning unimplemented method
 }
 
 void on_log_callback(struct mosquitto *mosq, void *obj, int level, const char *str){
     NSLog(@"mosquitto log : %s",str);
+}
+
+
+#pragma mark - Support methods
+-(NSString*) tlsVersionEnumToString:(TLSVERSION)enumVal
+{
+    NSArray *kTlsTypeArray = [[NSArray alloc] initWithObjects:kTlsVersionArray];
+    return [kTlsTypeArray objectAtIndex:enumVal];
 }
 
 @end

@@ -10,6 +10,12 @@ Features
 2. Support for SSL,TLS
 3. Support for custom CA SSL.
 
+Wiki
+===
+
+https://github.com/karthiksaligrama/MQTT/wiki
+
+
 API Example
 ===
 
